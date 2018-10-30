@@ -145,7 +145,6 @@ view: users {
     value_format: "0.0\%"
   }
 
-
   measure: average_user_spend {
     type: number
     sql: SUM(${order_items.sale_price}) / ${count} ;;
