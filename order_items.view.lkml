@@ -5,6 +5,8 @@ view: order_items {
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
+    label: "order_items_id"
+    hidden: yes
   }
 
   dimension_group: created {
@@ -37,7 +39,7 @@ view: order_items {
 
   dimension: inventory_item_id {
     type: number
-    # hidden: yes
+    hidden: yes
     sql: ${TABLE}.inventory_item_id ;;
   }
 
@@ -82,18 +84,81 @@ view: order_items {
   dimension: status {
     type: string
     sql: ${TABLE}.status ;;
+    label: "Order Status"
   }
 
   dimension: user_id {
     type: number
-    # hidden: yes
+    hidden: yes
     sql: ${TABLE}.user_id ;;
   }
 
   measure: count {
     type: count
     drill_fields: [detail*]
+    label: "Count of Order Items"
   }
+
+measure: total_sales_price  {
+  type: sum
+  sql: ${sale_price} ;;
+  value_format: "$#,##0.00"
+  }
+
+  measure: average_sales_price  {
+    type: average
+    sql: ${sale_price} ;;
+    value_format: "$#,##0.00"
+  }
+
+  measure: cumulative_total_sales {
+    type: running_total
+    sql: ${total_sales_price} ;;
+    value_format: "$#,##0.00"
+  }
+
+  measure: total_gross_revenue {
+    type: sum
+    sql: CASE WHEN ${status} NOT IN ('Cancelled', 'Returned')
+     THEN ${sale_price}
+     ELSE 0
+     END ;;
+    value_format: "$#,##0.00"
+  }
+
+  measure: total_gross_margin_amount {
+    type: sum
+    filters: {
+      field: status
+      value: "Complete"
+    }
+    sql: ${sale_price} - ${inventory_items.cost} ;;
+    value_format: "$#,##0.00"
+  }
+
+  measure: average_gross_margin {
+    type: average
+    filters: {
+      field: status
+      value: "Complete"
+    }
+    sql: ${sale_price} - ${inventory_items.cost} ;;
+    value_format: "$#,##0.00"
+  }
+
+measure: gross_margin_percent {
+  type: number
+  sql:  100 * (( ${total_gross_margin_amount} ) / ${total_gross_revenue}) ;;
+  value_format: "0\%"
+  }
+
+measure: total_cost {
+    type: sum
+    sql: ${inventory_items.cost} ;;
+    label: "Total Cost"
+    value_format: "$#,##0.00"
+  }
+
 
   # ----- Sets of fields for drilling ------
   set: detail {

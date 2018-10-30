@@ -5,6 +5,7 @@ view: users {
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
+    hidden: yes
   }
 
   dimension: age {
@@ -47,11 +48,13 @@ view: users {
   dimension: email {
     type: string
     sql: ${TABLE}.email ;;
+    hidden: yes
   }
 
   dimension: first_name {
     type: string
     sql: ${TABLE}.first_name ;;
+    hidden: yes
   }
 
   dimension: gender {
@@ -62,27 +65,28 @@ view: users {
   dimension: last_name {
     type: string
     sql: ${TABLE}.last_name ;;
+    hidden: yes
   }
 
-  dimension: latitude {
-    type: number
-    sql: ${TABLE}.latitude ;;
-  }
+#  dimension: latitude {
+#    type: number
+#    sql: ${TABLE}.latitude ;;
+#  }
 
-  dimension: longitude {
-    type: number
-    sql: ${TABLE}.longitude ;;
-  }
+#  dimension: longitude {
+#    type: number
+#    sql: ${TABLE}.longitude ;;
+#  }
 
   dimension: state {
     type: string
     sql: ${TABLE}.state ;;
   }
 
-dimension: from_ca_or_ny {
-  type: yesno
-  sql: ${TABLE}.state = 'California' OR ${TABLE}.state = 'New York' ;;
-}
+#dimension: from_ca_or_ny {
+#  type: yesno
+#  sql: ${TABLE}.state = 'California' OR ${TABLE}.state = 'New York' ;;
+#}
 
   dimension: traffic_source {
     type: string
@@ -97,10 +101,56 @@ dimension: from_ca_or_ny {
   measure: count {
     type: count
     drill_fields: [id, first_name, last_name, events.count, order_items.count]
+    label: "Count of Customers"
   }
 
-  measure: avg_age {
-    type: average
-    sql: ${TABLE}.age ;;
+  measure: count_items_returned {
+    type: count_distinct
+    filters: {
+      field: order_items.status
+      value: "Returned"
+      }
+    sql: ${order_items.id} ;;
+    label: "Count of Items Returned"
   }
+
+  measure: count_users_with_returns {
+    type: count_distinct
+    filters: {
+      field: order_items.status
+      value: "Returned"
+    }
+    sql: ${order_items.user_id} ;;
+    label: "Count of Customers with Returns"
+  }
+
+  measure: percent_users_with_returns {
+    type: number
+    sql: 100.000 * ${count_users_with_returns} / ${count};;
+    label: "Percent of Customers with Returns"
+    value_format: "0\%"
+  }
+
+  measure: count_items_sold {
+    type: count_distinct
+    sql: ${order_items.id} ;;
+    label: "Count of Items Sold"
+    hidden: yes
+  }
+
+  measure: item_return_rate {
+    type: number
+    sql: 100.000 * ${count_items_returned} / ${count_items_sold};;
+    label: "Item Return Rate"
+    value_format: "0.0\%"
+  }
+
+
+  measure: average_user_spend {
+    type: number
+    sql: SUM(${order_items.sale_price}) / ${count} ;;
+    value_format: "$#,##0.00"
+    label: "Average Customer Spend"
+  }
+
 }
