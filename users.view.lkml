@@ -5,7 +5,8 @@ view: users {
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
-    hidden: yes
+#    hidden: yes
+  label: "User ID"
   }
 
   dimension: age {
@@ -98,6 +99,27 @@ view: users {
     sql: ${TABLE}.zip ;;
   }
 
+  dimension: current_month {
+    type: yesno
+    sql: EXTRACT(MONTH FROM GETDATE())=EXTRACT(MONTH FROM ${created_date}) AND EXTRACT(YEAR FROM GETDATE())=EXTRACT(YEAR FROM ${created_date}) ;;
+  }
+
+  dimension: prior_month_to_date {
+    type: yesno
+    sql: EXTRACT(MONTH FROM DATEADD(MONTH, -1, GETDATE())) = EXTRACT(MONTH FROM ${created_date})
+    AND
+    EXTRACT(YEAR FROM DATEADD(MONTH, -1, GETDATE())) = EXTRACT(YEAR FROM ${created_date})
+    AND
+    EXTRACT(DAY FROM GETDATE()) >= EXTRACT(DAY FROM ${created_date})
+    ;;
+  }
+
+  dimension: new_customer {
+    type: yesno
+    sql: ${created_date} >= DATEADD(DAY, -90, GETDATE()) ;;
+    label: "New Customer in Prior 90 Days"
+  }
+
   measure: count {
     type: count
     drill_fields: [id, first_name, last_name, events.count, order_items.count]
@@ -150,6 +172,44 @@ view: users {
     sql: SUM(${order_items.sale_price}) / ${count} ;;
     value_format: "$#,##0.00"
     label: "Average Customer Spend"
+  }
+
+  measure: current_month_count {
+    type: count
+    filters: {
+      field: current_month
+      value: "Yes"
+    }
+  }
+
+  measure: prior_month_to_date_count {
+    type: count
+    filters: {
+      field: prior_month_to_date
+      value: "Yes"
+    }
+  }
+
+  measure: new_customer_total_revenue {
+    type: sum
+    filters: {
+      field: new_customer
+      value: "Yes"
+    }
+    sql: ${order_items.sale_price} ;;
+    sql_distinct_key: ${order_items.id} ;;
+    value_format: "$#,##0.00"
+  }
+
+  measure: old_customer_total_revenue {
+    type: sum
+    filters: {
+      field: new_customer
+      value: "No"
+    }
+    sql: ${order_items.sale_price} ;;
+    sql_distinct_key: ${order_items.id} ;;
+    value_format: "$#,##0.00"
   }
 
 }
