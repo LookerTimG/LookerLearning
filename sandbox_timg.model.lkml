@@ -36,20 +36,37 @@ persist_with: sandbox_timg_default_datagroup
 #  }
 #}
 
+explore: fact_order_items {}
+
 explore: order_items {
+#  view_name: order_items  order_analysis
+  label: "Order Analysis"
   join: users {
     type: left_outer
     sql_on: ${order_items.user_id} = ${users.id} ;;
     relationship: many_to_one
     view_label: "User Orders"
   }
-
   join: inventory_items {
     type: left_outer
     sql_on: ${order_items.inventory_item_id} = ${inventory_items.id} ;;
     relationship: one_to_one
     view_label: ""
   }
+}
+
+explore: customer_analysis {
+  from: order_items
+  fields: [customer_analysis.customer_set*]
+
+  join: users {
+    type: left_outer
+    sql_on: ${customer_analysis.user_id} = ${users.id} ;;
+    relationship: many_to_one
+    view_label: "User Orders"
+  }
+}
+
 
 #  join: products {
 #    type: left_outer
@@ -57,7 +74,7 @@ explore: order_items {
 #    relationship: many_to_one
 #    view_label: ""
 #  }
-}
+
 
 #explore: products {
 #  join: distribution_centers {

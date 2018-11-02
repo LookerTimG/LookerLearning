@@ -1,6 +1,23 @@
 view: order_items {
   sql_table_name: public.order_items ;;
 
+set: customer_set {
+  fields: [
+     user_id,
+#     order_count,
+#     count_tier,
+     revenue_tier,
+     count,
+     repeat_customer,
+     avg_days_from_last_order,
+     day_from_last_order,
+     is_active_customer,
+     max_order_date,
+     avg_count_of_orders_per_customer,
+     number_of_unique_customers,
+     count_of_orders
+  ]
+}
   dimension: id {
     primary_key: yes
     type: number
@@ -89,7 +106,7 @@ view: order_items {
 
   dimension: user_id {
     type: number
-    hidden: yes
+#    hidden: yes
     sql: ${TABLE}.user_id ;;
   }
 
@@ -144,11 +161,12 @@ measure: total_sales_price  {
     }
     sql: ${sale_price} - ${inventory_items.cost} ;;
     value_format: "$#,##0.00"
+    drill_fields: [inventory_items.product_category, inventory_items.product_name]
   }
 
 measure: gross_margin_percent {
   type: number
-  sql:  100 * (( ${total_gross_margin_amount} ) / ${total_gross_revenue}) ;;
+  sql:  100 * (( ${total_gross_margin_amount} ) / NULLIF(${total_gross_revenue}, 0)) ;;
   value_format: "0\%"
   }
 
@@ -159,6 +177,89 @@ measure: total_cost {
     value_format: "$#,##0.00"
   }
 
+measure: percent_of_total_gross_revenue {
+    type: percent_of_total
+    sql: ${total_gross_revenue} ;;
+    direction: "column"
+    value_format: "0.00\%"
+  }
+
+  measure: count_of_orders {
+    type: count_distinct
+    sql: ${order_id} ;;
+  }
+
+#   measure: count_tier {
+#     type: string
+#     sql: CASE WHEN ${count_of_orders} = 1 THEN '1 Order'
+#               WHEN ${count_of_orders} = 2 THEN '2 Orders'
+#               WHEN ${count_of_orders} BETWEEN 3 and 5 THEN '3-5 Orders'
+#               WHEN ${count_of_orders} BETWEEN 6 and 6 THEN '6-9 Orders'
+#               ELSE '10+ Orders'
+#               END
+#               ;;
+#   }
+
+  measure: revenue_tier {
+    type: string
+    sql: CASE WHEN ${total_gross_revenue} < 5.00 THEN '$0.00 - $4.99'
+              WHEN ${total_gross_revenue} BETWEEN 5.00 AND 19.99 THEN '$5.00 - $19.99'
+              WHEN ${total_gross_revenue} BETWEEN 20.00 AND 19.99 THEN '$5.00 - $19.99'
+              WHEN ${total_gross_revenue} BETWEEN 50.00 AND 49.99 THEN '$5.00 - $19.99'
+              WHEN ${total_gross_revenue} BETWEEN 100.00 AND 99.99 THEN '$5.00 - $19.99'
+              WHEN ${total_gross_revenue} BETWEEN 500.00 AND 999.99 THEN '$5.00 - $19.99'
+              ELSE '$1000+'
+              END
+    ;;
+  }
+
+  measure: number_of_unique_customers {
+    type: count_distinct
+    sql: ${user_id} ;;
+  }
+
+  measure: avg_count_of_orders_per_customer{
+    type: number
+    sql: ${count} / ${number_of_unique_customers} ;;
+    value_format: "0"
+  }
+
+  measure: avg_revenue_per_customer{
+    type: number
+    sql: ${count} / ${number_of_unique_customers} ;;
+    value_format: "0"
+  }
+
+  measure: min_order_date {
+    type: min
+    sql: ${created_date} ;;
+  }
+
+  measure: max_order_date {
+    type: max
+    sql: ${created_date} ;;
+  }
+
+  measure: is_active_customer {
+    type:  yesno
+    sql: ${created_date} >= DATEADD(day, -90, GETDATE()) ;;
+  }
+
+  measure: day_from_last_order {
+    type:  number
+    sql: DATEDIFF(day, ${max_order_date}, GETDATE()) ;;
+  }
+
+  measure: avg_days_from_last_order{
+    type: number
+    sql: ${day_from_last_order} / ${number_of_unique_customers} ;;
+    value_format: "0"
+  }
+
+  measure: repeat_customer {
+    type:  yesno
+    sql: ${count} > 1 ;;
+  }
 
   # ----- Sets of fields for drilling ------
   set: detail {

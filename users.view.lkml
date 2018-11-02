@@ -69,19 +69,25 @@ view: users {
     hidden: yes
   }
 
-#  dimension: latitude {
-#    type: number
-#    sql: ${TABLE}.latitude ;;
-#  }
+  dimension: latitude {
+    type: number
+    sql: ${TABLE}.latitude ;;
+  }
 
-#  dimension: longitude {
-#    type: number
-#    sql: ${TABLE}.longitude ;;
-#  }
+  dimension: longitude {
+    type: number
+    sql: ${TABLE}.longitude ;;
+  }
 
   dimension: state {
     type: string
     sql: ${TABLE}.state ;;
+  }
+
+  dimension: location {
+    type: location
+    sql_latitude: ${latitude} ;;
+    sql_longitude: ${longitude} ;;
   }
 
 #dimension: from_ca_or_ny {
@@ -92,7 +98,9 @@ view: users {
   dimension: traffic_source {
     type: string
     sql: ${TABLE}.traffic_source ;;
+    drill_fields: [user_details*]
   }
+
 
   dimension: zip {
     type: zipcode
@@ -172,6 +180,7 @@ view: users {
     sql: SUM(${order_items.sale_price}) / ${count} ;;
     value_format: "$#,##0.00"
     label: "Average Customer Spend"
+    drill_fields: [user_details*]
   }
 
   measure: current_month_count {
@@ -210,6 +219,25 @@ view: users {
     sql: ${order_items.sale_price} ;;
     sql_distinct_key: ${order_items.id} ;;
     value_format: "$#,##0.00"
+  }
+
+  measure: count_new_customers {
+    type: count
+    filters: {
+      field: new_customer
+      value: "Yes"
+    }
+    drill_fields: [user_details*]
+  }
+  set: user_details {
+    fields: [age_group, gender, count]
+  }
+
+  measure: average_gross_margin {
+    type: number
+    sql: ${order_items.gross_margin_percent} ;;
+    value_format: "0.0\%"
+    drill_fields: [inventory_items.brand, inventory_items.product_category]
   }
 
 }

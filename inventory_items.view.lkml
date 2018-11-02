@@ -29,15 +29,31 @@ view: inventory_items {
 #    sql: ${TABLE}.created_at ;;
 #  }
 
-#  dimension: product_brand {
-#    type: string
-#    sql: ${TABLE}.product_brand ;;
-#  }
+#   dimension: product_brand {
+#     type: string
+#     sql: ${TABLE}.product_brand ;;
+# #     hidden: yes
+#   view_label: "Order Items"
+#   }
+  dimension: brand {
+    type: string
+    sql: ${TABLE}.product_brand  ;;
+    drill_fields: [inventory_items.product_category, inventory_items.product_name]
+    link: {
+      label: "Google"
+      url: "https://www.google.com/search?q={{ value }}"
+    }
+    link: {
+      label: "Facebook"
+      url: "https://www.facebook.com/search/top/?q={{ value }}"
+    }
+    view_label: "Order Items"
+  }
 
-#  dimension: product_category {
-#    type: string
-#    sql: ${TABLE}.product_category ;;
-#  }
+  dimension: product_category {
+    type: string
+    sql: ${TABLE}.product_category ;;
+  }
 
 #  dimension: product_department {
 #    type: string
@@ -55,10 +71,10 @@ view: inventory_items {
     sql: ${TABLE}.product_id ;;
   }
 
-#  dimension: product_name {
-#    type: string
-#    sql: ${TABLE}.product_name ;;
-#  }
+  dimension: product_name {
+    type: string
+    sql: ${TABLE}.product_name ;;
+  }
 
 #  dimension: product_retail_price {
 #    type: number
@@ -97,5 +113,6 @@ view: inventory_items {
     label: "cost_total"
     hidden:  yes
   }
+
 
 }
