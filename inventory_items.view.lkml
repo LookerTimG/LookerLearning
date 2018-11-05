@@ -114,5 +114,16 @@ view: inventory_items {
     hidden:  yes
   }
 
+measure: brand_distinct_count {
+  type: count_distinct
+  sql: ${brand} ;;
+  view_label: "Order Items"
+}
+
+measure: category_distinct_count {
+  type: count_distinct
+  sql: ${product_category} ;;
+  view_label: "Order Items"
+}
 
 }
