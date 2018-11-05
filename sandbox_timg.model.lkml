@@ -38,6 +38,8 @@ persist_with: sandbox_timg_default_datagroup
 
 explore: fact_order_items {}
 
+explore: brand_fact {}
+
 explore: order_items {
 #  view_name: order_items  order_analysis
   label: "Order Analysis"
