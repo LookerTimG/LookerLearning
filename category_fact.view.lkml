@@ -20,7 +20,7 @@ GROUP BY ii.product_category
       ;;
   }
 
-  dimension: brand {
+  dimension: category {
     type: string
     sql: ${TABLE}.product_category ;;
   }
