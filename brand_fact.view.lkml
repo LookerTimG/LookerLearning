@@ -13,7 +13,7 @@ view: brand_fact {
       )
 
       SELECT ii.product_brand
-              , SUM(c1.order_count) AS reorder_count_brand
+              , SUM(c1.order_count) - 1 AS reorder_count_brand
       FROM c1
       INNER JOIN inventory_items ii
       ON c1.product_id = ii.product_id
@@ -28,7 +28,7 @@ view: brand_fact {
   }
 
   measure: count_reorders {
-    type: number
+    type: sum
     sql: ${TABLE}.reorder_count_brand ;;
   }
 }
