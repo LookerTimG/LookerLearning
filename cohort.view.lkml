@@ -9,7 +9,7 @@ view: cohort {
       SELECT user_id
             , months_prior
       FROM c1
-      where {% condition months_to_select %} c1.months_prior {% endcondition %}
+      where {% condition number_of_months_to_desired_month %} c1.months_prior {% endcondition %}
       ;;
   }
 
@@ -26,7 +26,7 @@ view: cohort {
     sql: ${TABLE}.months_prior ;;
   }
 
-    filter: months_to_select {
+    filter: number_of_months_to_desired_month {
       description: "Months how many months backwards to the desired month"
       type: number
       suggest_explore: cohort_by_userid

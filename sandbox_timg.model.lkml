@@ -75,7 +75,6 @@ explore: cohort_by_userid {
   from: order_items
   fields: [cohort_by_userid.customer_set*]
   join: cohort {
-##    view_label: "XX - User Cohort Filters"
     type: inner
     sql_on: ${cohort_by_userid.id} = ${cohort.user_id} ;;
     relationship: many_to_one
@@ -83,7 +82,7 @@ explore: cohort_by_userid {
   join: users {
     type: inner
     sql_on: ${cohort.user_id} = ${users.id} ;;
-    relationship: one_to_many
+    relationship: one_to_one
 
   }
 }
