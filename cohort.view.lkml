@@ -9,7 +9,7 @@ view: cohort {
 
   dimension: user_id {
     primary_key: yes
-    hidden: yes
+#    hidden: yes
     description: "Unique ID for each user that has ordered"
     type: number
     sql: ${TABLE}.user_id ;;
