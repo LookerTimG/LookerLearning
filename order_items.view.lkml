@@ -15,7 +15,8 @@ set: customer_set {
      max_order_date,
      avg_count_of_orders_per_customer,
      number_of_unique_customers,
-     count_of_orders
+     count_of_orders,
+     status
   ]
 }
   dimension: id {

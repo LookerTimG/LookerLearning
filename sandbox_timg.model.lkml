@@ -71,23 +71,21 @@ explore: customer_analysis {
   }
 }
 
-explore: cohort_by_userid {
-  from: order_items
-  fields: [cohort_by_userid.customer_set*]
-  join: cohort {
+explore: cohort {
+  join: order_items {
     type: inner
-    sql_on: ${cohort_by_userid.id} = ${cohort.user_id} ;;
-    relationship: many_to_one
+    sql_on: ${cohort.user_id} = ${order_items.user_id} ;;
+    relationship: one_to_many
+    fields: [order_items.customer_set*]
     }
   join: users {
     type: inner
     sql_on: ${cohort.user_id} = ${users.id} ;;
     relationship: one_to_one
-
   }
 }
 
-explore: cohort {}
+#explore: cohort {}
 
 #  join: products {
 #    type: left_outer
