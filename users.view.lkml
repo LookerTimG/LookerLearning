@@ -128,6 +128,29 @@ view: users {
     label: "New Customer in Prior 90 Days"
   }
 
+  dimension: days_since_signup {
+    type: number
+    sql: GETDATE()::date - ${TABLE}.created_at::date ;;
+    value_format: "0"
+  }
+  dimension: months_since_signup {
+    type:  number
+    sql: (GETDATE()::date - ${TABLE}.created_at::date) / 30 ;;
+    value_format: "0"
+  }
+
+  measure: avg_days_since_signup {
+    type: average
+    sql: GETDATE()::date - ${TABLE}.created_at::date ;;
+    value_format: "0"
+  }
+
+  measure: avg_months_since_signup {
+    type:  average
+    sql: (GETDATE()::date - ${TABLE}.created_at::date) / 30 ;;
+    value_format: "0"
+  }
+
   measure: count {
     type: count
     drill_fields: [id, first_name, last_name, events.count, order_items.count]
