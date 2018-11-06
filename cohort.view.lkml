@@ -1,6 +1,7 @@
 view: cohort {
   derived_table: {
     sql:id AS user_id
+        , ((GETDATE()::date - users.created_at::date)) / 30 AS months_prior
         FROM users
       where created_at {% condition months_to_select %} ((GETDATE()::date - users.created_at::date)) / 30 {% endcondition %}
       ;;
@@ -17,7 +18,7 @@ view: cohort {
     filter: months_to_select {
       description: "Months how many months backwards to the desired month"
       type: number
-      suggest_explore: users
-      suggest_dimension: users.created_date
+      suggest_explore: cohort
+      suggest_dimension: cohort.months_prior
     }
 }
