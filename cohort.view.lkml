@@ -2,7 +2,7 @@ view: cohort {
   derived_table: {
     sql:with c1 AS
       (
-      id AS user_id
+      SELECT id AS user_id
         , ((GETDATE()::date - users.created_at::date)) / 30 AS months_prior
         FROM users
       )
