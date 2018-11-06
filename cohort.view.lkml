@@ -15,6 +15,11 @@ view: cohort {
     sql: ${TABLE}.user_id ;;
   }
 
+  dimension: months_prior {
+    type: number
+    sql: ${TABLE}.months_prior ;;
+  }
+
     filter: months_to_select {
       description: "Months how many months backwards to the desired month"
       type: number
