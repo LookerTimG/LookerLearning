@@ -88,6 +88,8 @@ explore: cohort_by_userid {
   }
 }
 
+explore: cohort {}
+
 #  join: products {
 #    type: left_outer
 #    sql_on: ${inventory_items.product_id} = ${products.id} ;;
