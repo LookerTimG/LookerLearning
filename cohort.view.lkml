@@ -2,11 +2,12 @@ view: cohort {
   derived_table: {
     sql:id AS user_id
         FROM users
-      where created_at {% condition months_to_selecte %} ((GETDATE()::date - users.created_at::date)) / 30 {% endcondition %}
+      where created_at {% condition months_to_select %} ((GETDATE()::date - users.created_at::date)) / 30 {% endcondition %}
       ;;
   }
 
   dimension: user_id {
+    primary_key: yes
     hidden: yes
     description: "Unique ID for each user that has ordered"
     type: number

@@ -16,6 +16,7 @@ GROUP BY user_id
   # Define your dimensions and measures here, like this:
   dimension: user_id {
     description: "Unique ID for each user that has ordered"
+    primary_key: yes
     type: number
     sql: ${TABLE}.d_user_id ;;
   }
