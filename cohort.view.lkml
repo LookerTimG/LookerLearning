@@ -3,7 +3,7 @@ view: cohort {
     sql:id AS user_id
         , ((GETDATE()::date - users.created_at::date)) / 30 AS months_prior
         FROM users
-#      where {% condition months_to_select %} ((GETDATE()::date - users.created_at::date)) / 30 {% endcondition %}
+      where {% condition months_to_select %} ((GETDATE()::date - users.created_at::date)) / 30 {% endcondition %}
       ;;
   }
 
