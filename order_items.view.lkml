@@ -16,7 +16,8 @@ set: customer_set {
      avg_count_of_orders_per_customer,
      number_of_unique_customers,
      count_of_orders,
-     status
+     status,
+     created_date
   ]
 }
   dimension: id {
@@ -227,7 +228,7 @@ measure: percent_of_total_gross_revenue {
 
   measure: avg_revenue_per_customer{
     type: number
-    sql: ${count} / ${number_of_unique_customers} ;;
+    sql: AVG(${total_gross_revenue} / ${number_of_unique_customers}) ;;
     value_format: "0"
   }
 
@@ -260,6 +261,11 @@ measure: percent_of_total_gross_revenue {
   measure: repeat_customer {
     type:  yesno
     sql: ${count} > 1 ;;
+  }
+
+  measure: count_active_customer {
+    type: number
+    sql: SUM(CASE WHEN ${created_date} >= DATEADD(day, -90, GETDATE()) THEN 1 ELSE 0 END ;;
   }
 
   # ----- Sets of fields for drilling ------

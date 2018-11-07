@@ -81,7 +81,7 @@ explore: cohort {
   join: users {
     type: inner
     sql_on: ${cohort.user_id} = ${users.id} ;;
-    relationship: one_to_one
+    relationship: many_to_one
   }
 }
 

@@ -133,6 +133,7 @@ view: users {
     sql: GETDATE()::date - ${TABLE}.created_at::date ;;
     value_format: "0"
   }
+
   dimension: months_since_signup {
     type:  number
     sql: (GETDATE()::date - ${TABLE}.created_at::date) / 30 ;;
