@@ -17,7 +17,8 @@ set: customer_set {
      number_of_unique_customers,
      count_of_orders,
      status,
-     created_date
+     created_date,
+     count_active_customer
   ]
 }
   dimension: id {
@@ -265,7 +266,7 @@ measure: percent_of_total_gross_revenue {
 
   measure: count_active_customer {
     type: number
-    sql: SUM(CASE WHEN ${created_date} >= DATEADD(day, -90, GETDATE()) THEN 1 ELSE 0 END ;;
+    sql: SUM(CASE WHEN ${created_date} >= DATEADD(day, -90, GETDATE()) THEN 1 ELSE 0 END) ;;
   }
 
   # ----- Sets of fields for drilling ------
