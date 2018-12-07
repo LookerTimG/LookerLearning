@@ -7,7 +7,7 @@ view: filter_delimit {
         FROM users u1
         INNER JOIN users u2
         ON u1.id = u2.id+1
-        LIMIT 100
+        LIMIT 10
       ;;
   }
 
@@ -15,6 +15,12 @@ view: filter_delimit {
   dimension: test_val {
     type: string
     sql: ${TABLE}.test_val ;;
+    link: {
+      label: "My Link"
+      url: "https://learn.looker.com/dashboards/694?State={{ value | url_encode }}"
+    }
+
+
   }
 
 }

@@ -107,4 +107,6 @@ explore: customer_sales_by_month_since_signup {}
 #  }
 #}
 
-#explore: users {}
+explore: users {
+  fields: [last_name]
+}
