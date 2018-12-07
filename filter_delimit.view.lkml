@@ -17,7 +17,7 @@ view: filter_delimit {
     sql: ${TABLE}.test_val ;;
     link: {
       label: "My Link"
-      url: "https://learn.looker.com/dashboards/694?State={{ value | url_encode }}"
+      url: "https://profservices.dev.looker.com/dashboards/84?last_name={{ value | url_encode }}"
     }
 
 
