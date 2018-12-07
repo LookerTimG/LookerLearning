@@ -10,6 +10,8 @@ datagroup: sandbox_timg_default_datagroup {
 
 persist_with: sandbox_timg_default_datagroup
 
+explore: filter_delimit {}
+
 #explore: company_list {}
 
 #explore: distribution_centers {}
