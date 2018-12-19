@@ -113,6 +113,11 @@ set: customer_set {
     sql: ${TABLE}.user_id ;;
   }
 
+  dimension: order_sequence {
+    type: number
+    sql: ROW_NUMBER() OVER(PARTITION BY ${user_id} ORDER BY ${created_date}) ;;
+  }
+
   measure: count {
     type: count
     drill_fields: [detail*]

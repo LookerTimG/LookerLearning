@@ -47,7 +47,7 @@ view: inventory_items {
       label: "Facebook"
       url: "https://www.facebook.com/search/top/?q={{ value }}"
     }
-    view_label: "Order Items"
+#    view_label: "Order Items"
   }
 
   dimension: product_category {
@@ -125,5 +125,11 @@ measure: category_distinct_count {
   sql: ${product_category} ;;
   view_label: "Order Items"
 }
+
+# measure: percent_of_total_orders_by_brand {
+#   type: number
+#   sql: ratio_to_report(${order_items.total_sales_price}) OVER(PARTITION BY ${brand}) ;;
+#   value_format: "0.00\%"
+# }
 
 }

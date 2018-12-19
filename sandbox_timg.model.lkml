@@ -38,6 +38,24 @@ explore: filter_delimit {}
 #  }
 #}
 
+explore: order_patterns {}
+#   join: order_days {
+#     type: left_outer
+#     relationship: many_to_one
+#     sql: ${order_patterns.order_id} = ${order_days.order_id}
+#     AND ${order_patterns.user_id} = ${order_days.user_id};;
+#     view_label: "Order Patterns"
+#   }
+# }
+
+explore: fashionly_case3 {
+  from: order_patterns
+  }
+
+explore: fashionly_case3_1 {
+  from: order_days
+}
+
 explore: fact_order_items {}
 
 explore: brand_fact {}
@@ -88,6 +106,29 @@ explore: cohort {
 }
 
 explore: customer_sales_by_month_since_signup {}
+
+explore: inventory_items {
+  label: "Brand Analysis"
+join: order_items {
+  type: inner
+  relationship: many_to_one
+  sql_on: ${order_items.inventory_item_id} = ${inventory_items.id} ;;
+}
+}
+
+explore: order_items_2 {
+  always_filter: {
+    filters: {
+      field: inventory_items_2.product_category
+      value: ""
+    }
+  }
+join: inventory_items_2 {
+  type: inner
+  relationship: many_to_one
+  sql_on:  ${order_items_2.inventory_item_id} = ${inventory_items_2.id} ;;
+}
+}
 
 #explore: cohort {}
 

@@ -43,4 +43,38 @@ view: user_test {
     sql: ${TABLE}.last_name ;;
   }
 
+  dimension: created_at {
+    type: date
+    sql: ${TABLE}.created_at ;;
+  }
+
+  dimension: shipped_at {
+    type: date
+    sql: ${TABLE}.shipped_at ;;
+  }
+
+  dimension: returned_at {
+    type: date
+    sql: ${TABLE}.returned_at ;;
+  }
+
+  measure: count {
+    type: count
+  }
+
+  measure: distinct_created_at {
+    type: count_distinct
+    sql: ${created_at} ;;
+  }
+
+  measure: distinct_shipped_at {
+    type: count_distinct
+    sql: ${shipped_at} ;;
+  }
+
+  measure: distinct_returned_at {
+    type: count_distinct
+    sql: ${returned_at} ;;
+  }
+
 }
