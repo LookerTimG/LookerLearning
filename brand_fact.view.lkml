@@ -27,6 +27,11 @@ view: brand_fact {
     sql: ${TABLE}.product_brand ;;
   }
 
+  dimension: constant_test {
+    type: number
+    sql: .39 ;;
+  }
+
   measure: count_reorders {
     type: sum
     sql: ${TABLE}.reorder_count_brand ;;

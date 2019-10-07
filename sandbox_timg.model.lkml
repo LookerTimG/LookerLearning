@@ -10,7 +10,22 @@ datagroup: sandbox_timg_default_datagroup {
 
 persist_with: sandbox_timg_default_datagroup
 
+explore: bsandell_extend {}
+explore: bsandell {}
+
 explore: filter_delimit {}
+
+explore: user_1 {
+  from: users
+}
+
+explore: user_2 {
+  from: users
+}
+
+explore: users_combine {}
+
+explore: pie_chart_test {}
 
 #explore: company_list {}
 

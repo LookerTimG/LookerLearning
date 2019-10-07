@@ -1,4 +1,4 @@
-view: users {
+view: user_2 {
   sql_table_name: public.users ;;
 
   dimension: id {
@@ -6,7 +6,7 @@ view: users {
     type: number
     sql: ${TABLE}.id ;;
 #    hidden: yes
-  label: "User ID"
+    label: "User ID"
   }
 
   dimension: age {
@@ -115,11 +115,11 @@ view: users {
   dimension: prior_month_to_date {
     type: yesno
     sql: EXTRACT(MONTH FROM DATEADD(MONTH, -1, GETDATE())) = EXTRACT(MONTH FROM ${created_date})
-    AND
-    EXTRACT(YEAR FROM DATEADD(MONTH, -1, GETDATE())) = EXTRACT(YEAR FROM ${created_date})
-    AND
-    EXTRACT(DAY FROM GETDATE()) >= EXTRACT(DAY FROM ${created_date})
-    ;;
+          AND
+          EXTRACT(YEAR FROM DATEADD(MONTH, -1, GETDATE())) = EXTRACT(YEAR FROM ${created_date})
+          AND
+          EXTRACT(DAY FROM GETDATE()) >= EXTRACT(DAY FROM ${created_date})
+          ;;
   }
 
   dimension: new_customer {

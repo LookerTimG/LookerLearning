@@ -100,4 +100,16 @@ view: order_items_2 {
     value_format_name: usd
   }
 
+  measure: sale_price_m {
+    type: max
+    sql: ${sale_price} ;;
+    value_format_name: usd
+  }
+
+  measure: sale_price_m2 {
+    type: number
+    sql: ${sale_price} ;;
+    value_format_name: usd
+  }
+
 }

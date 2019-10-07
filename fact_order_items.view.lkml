@@ -21,8 +21,9 @@ GROUP BY user_id
     sql: ${TABLE}.d_user_id ;;
   }
 
-dimension: last_order_date {
-  type: date
+dimension_group: last_order {
+  type: time
+  timeframes: [raw,date,week,month,year]
   sql: ${TABLE}.last_order_date ;;
   }
 

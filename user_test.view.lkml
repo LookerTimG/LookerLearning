@@ -25,7 +25,18 @@ view: user_test {
 
   dimension: email {
     type: string
-    sql: ${TABLE}.email ;;
+    label: "{% 'yes' == 'yes' %}
+            yes
+            {% else %}
+            no
+            {% endif %}
+            "
+#     hidden: {% 'yes' == 'yes' %}
+#             yes
+#             {% else %}
+#             no
+#             {% endif %}
+#     sql: ${TABLE}.email ;;
   }
 
   dimension: first_name {
