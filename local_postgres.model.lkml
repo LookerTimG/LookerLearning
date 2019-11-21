@@ -3,7 +3,7 @@ connection: "postgres_local"
 # include all the views
 include: "*.view"
 
-include: "test_jellyvision.dashboard.lookml"
+include: "MyLookMLDash/test_jellyvision.dashboard.lookml"
 
 datagroup: local_postgres_default_datagroup {
   # sql_trigger: SELECT MAX(id) FROM etl_log;;
