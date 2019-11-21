@@ -56,7 +56,9 @@ explore: filter_delimit {}
 #  }
 #}
 
-explore: fact_order_items {}
+explore: fact_order_items {
+  label: "ABC"
+}
 
 explore: brand_fact {}
 
