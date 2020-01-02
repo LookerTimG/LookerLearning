@@ -35,5 +35,10 @@ view: brand_fact {
   measure: count_reorders {
     type: sum
     sql: ${TABLE}.reorder_count_brand ;;
+#     html: <a href="https://profservices.dev.looker.com/" target="_self" title="Click for a Detailed Look"> {{rendered_value}} </a> ;;
+    link: {
+      label: "Link Test"
+      url: "/looks/107?toggle=dat,pik"
+    }
   }
 }
