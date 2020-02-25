@@ -5,7 +5,41 @@ view: inventory_items {
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
-    hidden: yes
+  }
+
+  dimension_group: created {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.created_date ;;
+  }
+
+  dimension: product_id {
+    type: number
+    # hidden: yes
+    sql: ${TABLE}.product_id ;;
+  }
+
+  dimension_group: sold {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: ${TABLE}.sold_date ;;
   }
 
   dimension: cost {
@@ -65,12 +99,6 @@ view: inventory_items {
 #    sql: ${TABLE}.product_distribution_center_id ;;
 #  }
 
-  dimension: product_id {
-    type: number
-    hidden: yes
-    sql: ${TABLE}.product_id ;;
-  }
-
   dimension: product_name {
     type: string
     sql: ${TABLE}.product_name ;;
@@ -118,7 +146,7 @@ measure: brand_distinct_count {
   type: count_distinct
   sql: ${brand} ;;
   view_label: "Order Items"
-}
+  }
 
 measure: category_distinct_count {
   type: count_distinct

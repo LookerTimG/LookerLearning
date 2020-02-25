@@ -5,20 +5,6 @@ view: users {
     primary_key: yes
     type: number
     sql: ${TABLE}.id ;;
-#    hidden: yes
-  label: "User ID"
-  }
-
-  dimension: age {
-    type: number
-    sql: ${TABLE}.age ;;
-  }
-
-  dimension: age_group {
-    type: tier
-    tiers: [15, 25, 35, 50, 65]
-    sql: ${TABLE}.age ;;
-    style: integer
   }
 
   dimension: city {
@@ -36,26 +22,25 @@ view: users {
     type: time
     timeframes: [
       raw,
-      time,
       date,
       week,
       month,
       quarter,
       year
     ]
-    sql: ${TABLE}.created_at ;;
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.created_date ;;
   }
 
   dimension: email {
     type: string
     sql: ${TABLE}.email ;;
-    hidden: yes
   }
 
   dimension: first_name {
     type: string
     sql: ${TABLE}.first_name ;;
-    hidden: yes
   }
 
   dimension: gender {
@@ -66,8 +51,38 @@ view: users {
   dimension: last_name {
     type: string
     sql: ${TABLE}.last_name ;;
-    hidden: yes
   }
+
+  dimension: state {
+    type: string
+    sql: ${TABLE}.state ;;
+  }
+
+  dimension: zip {
+    type: zipcode
+    sql: ${TABLE}.zip ;;
+  }
+
+  measure: count {
+    type: count
+    drill_fields: [id, first_name, last_name, orders.count, user_data.count]
+#    hidden: yes
+  label: "User ID"
+  }
+
+  dimension: age {
+    type: number
+    sql: ${TABLE}.age ;;
+  }
+
+  dimension: age_group {
+    type: tier
+    tiers: [15, 25, 35, 50, 65]
+    sql: ${TABLE}.age ;;
+    style: integer
+  }
+
+
 
   dimension: latitude {
     type: number
@@ -77,11 +92,6 @@ view: users {
   dimension: longitude {
     type: number
     sql: ${TABLE}.longitude ;;
-  }
-
-  dimension: state {
-    type: string
-    sql: ${TABLE}.state ;;
   }
 
   dimension: location {
@@ -99,12 +109,6 @@ view: users {
     type: string
     sql: ${TABLE}.traffic_source ;;
     drill_fields: [user_details*]
-  }
-
-
-  dimension: zip {
-    type: zipcode
-    sql: ${TABLE}.zip ;;
   }
 
   dimension: current_month {
@@ -152,12 +156,6 @@ view: users {
     value_format: "0"
   }
 
-  measure: count {
-    type: count
-    drill_fields: [id, first_name, last_name, events.count, order_items.count]
-    label: "Count of Customers"
-  }
-
 
   measure: current_month_count {
     type: count
@@ -183,7 +181,15 @@ view: users {
     }
     drill_fields: [user_details*]
   }
+
   set: user_details {
     fields: [age_group, gender, count]
   }
+
+  # measure: average_gross_margin {
+  #   type: number
+  #   sql: ${order_items.gross_margin_percent} ;;
+  #   value_format: "0.0\%"
+  #   drill_fields: [inventory_items.brand, inventory_items.product_category]
+  # }
 }
