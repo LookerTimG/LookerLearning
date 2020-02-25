@@ -36,10 +36,12 @@ view: brand_fact {
     type: sum
     sql: ${TABLE}.reorder_count_brand ;;
 #     html: <a href="https://profservices.dev.looker.com/" target="_self" title="Click for a Detailed Look"> {{rendered_value}} </a> ;;
+#     Opens in a new tab
     link: {
       label: "Link Test Absolute"
       url: "https://profservices.dev.looker.com/looks/107?toggle=dat,pik"
     }
+#     Opens in the same tab
     link: {
       label: "Link Test Relative"
       url: "/looks/107?toggle=dat,pik"

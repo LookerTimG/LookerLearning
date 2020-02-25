@@ -90,6 +90,7 @@ dimension: year_month_date {
 measure: total_order_count {
   type: sum
   sql: ${order_count} ;;
+  drill_fields: [last_order_date, order_count, sales_amt]
 }
 
 measure: total_customer_count {

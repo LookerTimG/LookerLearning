@@ -3,7 +3,7 @@ connection: "thelook_events_redshift"
 # include all the views
 include: "*.view"
 include: "reorder_by_brand_lookml_test.dashboard"
-
+include: "customer_behavior.dashboard"
 datagroup: sandbox_timg_default_datagroup {
   # sql_trigger: SELECT MAX(id) FROM etl_log;;
   max_cache_age: "1 hour"

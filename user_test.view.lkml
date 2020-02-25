@@ -23,21 +23,21 @@ view: user_test {
     sql: ${TABLE}.created_at ;;
   }
 
-  dimension: email {
-    type: string
-    label: "{% 'yes' == 'yes' %}
-            yes
-            {% else %}
-            no
-            {% endif %}
-            "
-#     hidden: {% 'yes' == 'yes' %}
+#   dimension: email {
+#     type: string
+#     label: "{% 'yes' == 'yes' %}
 #             yes
 #             {% else %}
 #             no
 #             {% endif %}
-#     sql: ${TABLE}.email ;;
-  }
+#             "
+# #     hidden: {% 'yes' == 'yes' %}
+# #             yes
+# #             {% else %}
+# #             no
+# #             {% endif %}
+# #     sql: ${TABLE}.email ;;
+#   }
 
   dimension: first_name {
     type: string
