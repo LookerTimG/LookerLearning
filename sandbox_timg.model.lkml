@@ -1,6 +1,8 @@
 connection: "postgres_local"
 
-include: "*.view.lkml"                       # include all views in this project
+include: "*.view.lkml"
+
+include: "/LookMLDemo/brand_fact.view.lkml"# include all views in this project
 
 include: "reorder_by_brand_lookml_test.dashboard"
 # # Select the views that should be a part of this model,
